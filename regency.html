@@ -47,7 +47,32 @@
             .grid-2 { grid-template-columns: 1fr 1fr; gap: 6rem; }
             .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
         }
+/* --- LIQUID GLASS STATUS BADGE --- */
+.glass-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px;
 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9999px; /* Pill shape */
+}
+
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: block; }
+.divider { color: rgba(255, 255, 255, 0.2); margin: 0 2px; }
+
+/* Colors & Animation */
+.dot-open { background-color: #4ade80; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); animation: pulse-green 2s infinite; }
+.text-open { color: #4ade80; font-weight: 500; text-shadow: 0 0 10px rgba(74,222,128,0.3); }
+
+.dot-closed { background-color: #ef4444; }
+.text-closed { color: #ef4444; font-weight: 500; }
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
         /* NAVIGATION */
         nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 50; mix-blend-mode: difference; }
         .nav-brand { font-size: 1.5rem; }
@@ -122,9 +147,12 @@
         <a href="#reviews">Reviews</a>
         <a href="filming.html">Filming</a>
     </div>
-    <div style="font-size: 0.75rem; text-align: right; text-transform: uppercase; letter-spacing: 0.1em;">
-        <span id="status-indicator">Loading Time...</span>
+    <!-- UPDATED STATUS CONTAINER -->
+<div style="font-size: 0.7rem; text-align: right; text-transform: uppercase; letter-spacing: 0.1em;">
+    <div id="status-container" class="glass-badge">
+        Loading...
     </div>
+</div>
 </nav>
 
 <!-- HERO -->
@@ -136,6 +164,7 @@
         <h1 class="type-heading fade-in" style="max-width: 600px;">
             Best English Breakfast <br>in London.
         </h1>
+
     </div>
 </header>
 
@@ -264,7 +293,7 @@
             Bring a piece of history home. We are now selling the Official Regency Café London Gift Set, which specifically contains a collection of our signature souvenir mugs.
         </p>
         <!-- External Link Button -->
-        <a href=" " target="_blank" class="btn-solid" style="margin-top: 0;">Order Collection Now</a>
+        <a href="regency-cafe.co.uk" target="_blank" class="btn-solid" style="margin-top: 0;">Order Collection Now</a>
     </div>
 </section>
 
@@ -301,25 +330,55 @@
     });
     gsap.to(".fade-in", { y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power2.out", delay: 0.2 });
 
-    function updateTime() {
-        const el = document.getElementById('status-indicator');
+   // --- UPDATED STATUS LOGIC ---
+    function updateStatus() {
+        const container = document.getElementById('status-container');
+        
+        // Get London Time
         const now = new Date();
         const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
-        const hours = londonTime.getHours().toString().padStart(2, '0');
-        const minutes = londonTime.getMinutes().toString().padStart(2, '0');
-        const day = londonTime.getDay();
-        const h = londonTime.getHours();
-        let status = "Closed";
-        if(day >= 1 && day <= 5) {
-            if((h >= 7 && h < 14) || (h === 14 && minutes <= 30) || (h >= 16 && h < 19) || (h === 19 && minutes <= 15)) status = "Open";
-        } else if(day === 6) {
-            if(h >= 7 && h < 12) status = "Open";
+        
+        const day = londonTime.getDay(); // 0=Sun, 1=Mon...
+        const hours = londonTime.getHours();
+        const minutes = londonTime.getMinutes();
+        const timeDecimal = hours + (minutes / 60); // e.g., 14:30 = 14.5
+        
+        // Format string HH:MM
+        const timeString = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
+
+        // Logic: 
+        // Mon-Fri (1-5): 7:00-14:30 AND 16:00-19:15
+        // Sat (6): 7:00-12:00
+        // Sun (0): Closed
+        let isOpen = false;
+
+        if (day >= 1 && day <= 5) {
+            if ((timeDecimal >= 7 && timeDecimal < 14.5) || (timeDecimal >= 16 && timeDecimal < 19.25)) {
+                isOpen = true;
+            }
+        } else if (day === 6) {
+            if (timeDecimal >= 7 && timeDecimal < 12) {
+                isOpen = true;
+            }
         }
-        el.innerHTML = `London ${hours}:${minutes} — ${status}`;
-        el.style.color = status === "Open" ? "#e6e6e6" : "#a33333";
+
+        // Determine Classes
+        const colorClass = isOpen ? 'text-open' : 'text-closed';
+        const dotClass = isOpen ? 'dot-open' : 'dot-closed';
+        const statusText = isOpen ? 'OPEN NOW' : 'CLOSED';
+
+        // Render HTML with Glass Container Structure
+        container.innerHTML = `
+            <span class="status-dot ${dotClass}"></span>
+            <span class="${colorClass}">${statusText}</span> 
+            <span class="divider">|</span> 
+            <span class="${colorClass}">LONDON ${timeString}</span>
+        `;
     }
-    setInterval(updateTime, 1000);
-    updateTime();
+
+    // Init
+    setInterval(updateStatus, 60000); // Update every minute
+    updateStatus(); // Run immediately
 </script>
 </body>
 </html>
