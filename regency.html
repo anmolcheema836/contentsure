@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regency Café | London</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --bg: #080808;
+            --text-main: #e6e6e6;
+            --text-muted: #888888;
+            --accent: #a33333;
+            --font-logo: 'Josefin Sans', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            --spacing-section: 18vh;
+            --container-width: 1200px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: var(--font-sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3, h4 { font-weight: 400; color: var(--text-main); }
+        .type-logo { font-family: var(--font-logo); font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; line-height: 1; }
+        .type-heading { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; }
+        .type-sub { font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 2rem; display: block; }
+
+        a { color: inherit; text-decoration: none; transition: opacity 0.3s; }
+        a:hover { opacity: 0.7; }
+
+        /* LAYOUT */
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 2rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        @media(min-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; gap: 6rem; }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        }
+
+        /* NAVIGATION */
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 50; mix-blend-mode: difference; }
+        .nav-brand { font-size: 1.5rem; }
+        .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        @media(min-width: 768px) { .nav-menu { display: flex; } }
+
+        /* HERO */
+        header { height: 90vh; display: flex; align-items: flex-end; padding-bottom: 6rem; position: relative; }
+        .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; filter: grayscale(100%) contrast(1.1); z-index: -2; }
+        .hero-overlay { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.1) 40%, rgba(5,5,5,0.8) 80%, rgba(5,5,5,1) 100%); }
+
+        section { margin-bottom: var(--spacing-section); }
+
+        /* IMAGES & VIDEO */
+        .story-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; filter: grayscale(100%); opacity: 0.8; transition: filter 0.5s ease, opacity 0.5s ease; cursor: pointer; }
+        .story-img:hover { filter: grayscale(0%); opacity: 1; }
+
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #111; margin-bottom: 1rem; filter: grayscale(100%); opacity: 0.8; transition: filter 0.5s ease, opacity 0.5s ease; }
+        .video-wrapper:hover { filter: grayscale(0%); opacity: 1; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* BUTTONS */
+        .btn-outline {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--text-main);
+            font-family: var(--font-logo);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        .btn-outline:hover { background: var(--text-main); color: var(--bg); }
+
+        /* REVIEW STYLES */
+        .review-block { margin-bottom: 3rem; }
+        .stars { color: var(--accent); font-size: 0.8rem; margin-bottom: 0.5rem; letter-spacing: 2px; }
+        .review-text { font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 1rem; }
+        .review-meta { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
+
+        /* FOOTER */
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 6rem 0; font-size: 0.9rem; color: var(--text-muted); }
+
+        .fade-in { opacity: 0; transform: translateY(20px); }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <a href="index.html" class="type-logo nav-brand">REGENCY CAFE</a>
+    <div class="nav-menu">
+        <a href="#about">Story</a>
+        <a href="menu.html">Menu</a>
+        <a href="#reviews">Reviews</a>
+        <a href="filming.html">Filming</a>
+    </div>
+    <div style="font-size: 0.75rem; text-align: right; text-transform: uppercase; letter-spacing: 0.1em;">
+        <span id="status-indicator">Loading Time...</span>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header>
+    <div class="hero-overlay"></div>
+    <img src="https://assets-eu-01.kc-usercontent.com/6bb3df3c-b648-01ae-2357-22fa5c7d5f19/23f0f2b9-dfbf-41f0-8ffb-aebadacdc444/The%20Regency%20Cafe%20Image.jpg" alt="Interior" class="hero-img">
+    <div class="container" style="width: 100%;">
+        <span class="type-sub fade-in">Est. 1946 — Westminster, London</span>
+        <h1 class="type-heading fade-in" style="max-width: 600px;">
+            Best English Breakfast <br>in London.
+        </h1>
+    </div>
+</header>
+
+<!-- STORY -->
+<section id="about" class="container">
+    <div class="grid-2">
+        <div>
+            <span class="type-sub">The Institution</span>
+            <h2 class="type-heading" style="margin-bottom: 2rem;">Authentic. Art Deco. <br>Filmed on location.</h2>
+        </div>
+        <div style="color: var(--text-muted);">
+            <p style="margin-bottom: 1.5rem;">The Regency Café opened in 1946 on Regency Street, near Westminster London. This popular place has been voted as the fifth best eating place in London on Yelp in 2013.</p>
+            <p style="margin-bottom: 1.5rem;">The cafe is designed in an art deco style. Interior decorations include photographs of Tottenham Hotspur football players, walls tiling is original but the tables are new and formica topped.</p>
+            <p>The cafe has been featured as a filming location in several BBC series such as <em>Judge John Deed</em>, <em>Rescue Me</em> and <em>London Spy</em>. It has also appeared in the films <em>Layer Cake</em> and <em>Brighton Rock</em> as well as <em>Pride</em>.</p>
+        </div>
+    </div>
+    
+    <div class="grid-3" style="margin-top: 6rem;">
+        <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/f6/59/4a/regency-cafe.jpg?w=900&h=-1&s=1" class="story-img" alt="Regency Detail">
+        <img src="https://media-cdn.tripadvisor.com/media/photo-s/12/26/4a/19/regency-cafe-pimlico.jpg" class="story-img" alt="Regency Detail">
+        <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_13.jpg" class="story-img" alt="Regency Detail">
+    </div>
+</section>
+
+<!-- HIGHLIGHT MENU -->
+<section id="menu" class="container">
+    <div style="text-align: center; margin-bottom: 6rem;">
+        <span class="type-sub">The Menu</span>
+        <h2 class="type-heading">No Substitutions.</h2>
+        <p style="color: var(--text-muted); margin-top: 1rem;">Authentic English breakfast for excellent value.</p>
+    </div>
+
+    <!-- Highlight 1 -->
+    <div class="grid-2" style="align-items: center; margin-bottom: 6rem;">
+        <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_11.jpg" alt="Full English" class="story-img">
+        <div>
+            <span class="type-sub" style="color: var(--text-main); margin-bottom: 0.5rem;">The Icon</span>
+            <h3 class="type-heading" style="font-size: 2rem; margin-bottom: 1rem;">Set Breakfast</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">The definitive London morning. Egg, Bacon, Sausage, Beans, Toast. Includes Coffee or Tea.</p>
+            <p class="type-logo" style="font-size: 1.25rem; color: var(--accent);">£6.95</p>
+        </div>
+    </div>
+
+    <!-- Highlight 2 -->
+    <div class="grid-2" style="align-items: center;">
+        <div style="order: 2;">
+            <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_9.jpg" alt="Omelette" class="story-img">
+        </div>
+        <div style="order: 1;">
+            <span class="type-sub" style="color: var(--text-main); margin-bottom: 0.5rem;">Lunch Classic</span>
+            <h3 class="type-heading" style="font-size: 2rem; margin-bottom: 1rem;">Omelette</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Three egg omelette served with our legendary steak-cut chips. Golden, fluffy, and filling.</p>
+            <p class="type-logo" style="font-size: 1.25rem; color: var(--accent);">£5.50</p>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 6rem;">
+        <a href="menu.html" class="btn-outline">View Full Menu</a>
+    </div>
+</section>
+
+<!-- REVIEWS (Reduced + Button) -->
+<section id="reviews" class="container">
+    <!-- NEW HEADER WITH BUTTON -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; flex-wrap: wrap; gap: 2rem;">
+        <div>
+            <span class="type-sub">The Verdict</span>
+            <h2 class="type-heading">4.7 / 5 Stars</h2>
+        </div>
+        <a href="https://www.google.com/maps/place/Regency+Cafe/@51.4937725,-78.179069,8883620m/data=!3m1!1e3!4m12!1m2!2m1!1sregency+cafe!3m8!1s0x487604dd8061aee7:0x9fb87b86a09b1332!8m2!3d51.4937725!4d-0.132194!9m1!1b1!15sCgxyZWdlbmN5IGNhZmVaDiIMcmVnZW5jeSBjYWZlkgEEY2FmZeABAA!16s%2Fm%2F0t_dnzf?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-outline" style="margin-top: 0;">Read All Reviews</a>
+    </div>
+
+    <div class="grid-2">
+        <div class="review-block">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Proper London brekkie, mate! Ain’t no place like Regency Café, innit? Tastes bangin’, and the place looks straight outta a movie."</p>
+            <div class="review-meta">Reputatio Swiss — Google Review</div>
+        </div>
+
+        <div class="review-block">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Real English breakfast!! this is food that fills you up for a long time. There are a lot of people here and the place is very popular."</p>
+            <div class="review-meta">Ole Zak — Google Review</div>
+        </div>
+    </div>
+</section>
+
+<!-- MEDIA / FILMING -->
+<section id="media" class="container">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem;">
+        <div>
+            <span class="type-sub">On Screen</span>
+            <h2 class="type-heading">Filming Location</h2>
+        </div>
+        <a href="filming.html" class="btn-outline" style="margin-top: 0;">Enquire Now</a>
+    </div>
+    
+    <div class="grid-3">
+        <div>
+            <div class="video-wrapper">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/U0z62IALjqM?si=Yyajh0RCwiCbugVY" title="Layer Cake" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <h4 class="dish-name" style="margin-top: 1rem;">Layer Cake (2004)</h4>
+        </div>
+        <div>
+            <div class="video-wrapper">
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/RIz4Sph-KRM?si=DB4nHc-MIiI_1hms" title="Warriors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <h4 class="dish-name" style="margin-top: 1rem;">Warriors (1999)</h4>
+        </div>
+        <div>
+            <div class="video-wrapper">
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/B7UFOKQdu9E?si=uOL89E-wpOmTy2Fr" title="LondonMap" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <h4 class="dish-name" style="margin-top: 1rem;">LondonMap Feature</h4>
+        </div>
+    </div>
+    <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">Also seen in The Telegraph, Rocketman, Pride, Judge John Deed, London Spy.</p>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+    <div class="container">
+        <div class="grid-2">
+            <div>
+                <h2 class="type-logo" style="font-size: 2.5rem; margin-bottom: 2rem;">REGENCY CAFE</h2>
+                <p style="margin-bottom: 0.5rem;">17-19 Regency St, Westminster</p>
+                <p style="margin-bottom: 0.5rem;">London SW1P 4BY, UK</p>
+                <p><a href="tel:02078216596" style="color: var(--text-main);">020 7821 6596</a></p>
+            </div>
+            <div>
+                <h4 class="type-sub" style="color: var(--text-muted);">Opening Hours</h4>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;"><span>Mon – Fri</span><span>7:00 – 14:30, 16:00 – 19:15</span></div>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;"><span>Saturday</span><span>7:00 – 12:00</span></div>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; color: #555;"><span>Sunday</span><span>Closed</span></div>
+            </div>
+        </div>
+        <div style="margin-top: 6rem; display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">
+            <span>© 2026 REGENCY CAFE</span>
+            <span><a href="#" style="margin-right: 20px;">Blog</a><a href="#">Cookies</a></span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+    const elements = gsap.utils.toArray('h2, .review-block, .story-img, .video-wrapper');
+    elements.forEach(el => {
+        gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 30, opacity: 0, duration: 1.2, ease: "power2.out" });
+    });
+    gsap.to(".fade-in", { y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power2.out", delay: 0.2 });
+
+    function updateTime() {
+        const el = document.getElementById('status-indicator');
+        const now = new Date();
+        const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
+        const hours = londonTime.getHours().toString().padStart(2, '0');
+        const minutes = londonTime.getMinutes().toString().padStart(2, '0');
+        const day = londonTime.getDay();
+        const h = londonTime.getHours();
+        let status = "Closed";
+        if(day >= 1 && day <= 5) {
+            if((h >= 7 && h < 14) || (h === 14 && minutes <= 30) || (h >= 16 && h < 19) || (h === 19 && minutes <= 15)) status = "Open";
+        } else if(day === 6) {
+            if(h >= 7 && h < 12) status = "Open";
+        }
+        el.innerHTML = `London ${hours}:${minutes} — ${status}`;
+        el.style.color = status === "Open" ? "#e6e6e6" : "#a33333";
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+</script>
+</body>
+</html>

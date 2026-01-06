@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filming | Regency Café</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* --- COPY OF SHARED STYLES --- */
+        :root { --bg: #080808; --text-main: #e6e6e6; --text-muted: #888888; --accent: #a33333; --font-logo: 'Josefin Sans', sans-serif; --font-serif: 'Playfair Display', serif; --font-sans: 'Inter', sans-serif; --spacing-section: 18vh; --container-width: 1200px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: var(--font-sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        h1, h2, h3, h4 { font-weight: 400; color: var(--text-main); }
+        .type-logo { font-family: var(--font-logo); font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; line-height: 1; }
+        .type-heading { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; }
+        .type-sub { font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 2rem; display: block; }
+        a { color: inherit; text-decoration: none; transition: opacity 0.3s; } a:hover { opacity: 0.7; }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 2rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        @media(min-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; gap: 6rem; }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        }
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 50; mix-blend-mode: difference; }
+        .nav-brand { font-size: 1.5rem; }
+        .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        @media(min-width: 768px) { .nav-menu { display: flex; } }
+        header { height: 60vh; display: flex; align-items: flex-end; padding-bottom: 6rem; position: relative; }
+        .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: grayscale(100%); z-index: -2; }
+        .hero-overlay { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.8) 80%, rgba(5,5,5,1) 100%); }
+        section { margin-bottom: var(--spacing-section); }
+        
+        /* VIDEO WRAPPER */
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #111; margin-bottom: 1rem; filter: grayscale(100%); opacity: 0.8; transition: filter 0.5s ease, opacity 0.5s ease; }
+        .video-wrapper:hover { filter: grayscale(0%); opacity: 1; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* SPECS GRID */
+        .spec-item { border: 1px solid rgba(255,255,255,0.2); padding: 2rem; text-align: center; }
+        .spec-label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; color: var(--text-muted); }
+        .spec-value { font-family: var(--font-logo); font-size: 1.5rem; color: var(--text-main); }
+
+        /* FORM */
+        .form-group { margin-bottom: 2rem; }
+        label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
+        input, textarea { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding: 1rem 0; color: var(--text-main); font-family: var(--font-sans); outline: none; transition: border-color 0.3s; }
+        input:focus, textarea:focus { border-color: var(--accent); }
+        .btn-submit { background: transparent; border: 1px solid var(--text-main); color: var(--text-main); padding: 1rem 3rem; text-transform: uppercase; letter-spacing: 0.2em; font-family: var(--font-logo); cursor: pointer; transition: all 0.3s; margin-top: 1rem; }
+        .btn-submit:hover { background: var(--text-main); color: var(--bg); }
+
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 6rem 0; font-size: 0.9rem; color: var(--text-muted); }
+        .fade-in { opacity: 0; transform: translateY(20px); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="regency.html" class="type-logo nav-brand">REGENCY CAFE</a>
+    <div class="nav-menu">
+        <a href="regency.html#about">Story</a>
+        <a href="menu.html">Menu</a>
+        <a href="filming.html" style="color: var(--accent);">Filming</a>
+        <a href="#contact">Contact</a>
+    </div>
+    <div style="font-size: 0.75rem; text-align: right; text-transform: uppercase; letter-spacing: 0.1em;">
+        <span id="status-indicator">Loading...</span>
+    </div>
+</nav>
+
+<header>
+    <div class="hero-overlay"></div>
+    <!-- Filming related hero image -->
+    <img src="https://live.staticflickr.com/5502/10839846663_33d7d7d23f_b.jpg" alt="Filming Set" class="hero-img">
+    <div class="container" style="width: 100%;">
+        <span class="type-sub fade-in">Industry Access</span>
+        <h1 class="type-heading fade-in">Filming & Events</h1>
+    </div>
+</header>
+
+<!-- MEDIA SHOWCASE -->
+<section id="showcase" class="container">
+    <span class="type-sub">Previous Productions</span>
+    <h2 class="type-heading" style="margin-bottom: 3rem;">As Seen On Screen</h2>
+    
+    <div class="grid-3">
+        <div>
+            <div class="video-wrapper">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/U0z62IALjqM?si=Yyajh0RCwiCbugVY" title="Layer Cake" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <h4 class="dish-name" style="margin-top: 1rem;">Layer Cake (2004)</h4>
+        </div>
+        <div>
+            <div class="video-wrapper">
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/RIz4Sph-KRM?si=DB4nHc-MIiI_1hms" title="Warriors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <h4 class="dish-name" style="margin-top: 1rem;">Warriors (1999)</h4>
+        </div>
+        <div>
+            <div class="video-wrapper">
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/B7UFOKQdu9E?si=uOL89E-wpOmTy2Fr" title="LondonMap" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <h4 class="dish-name" style="margin-top: 1rem;">LondonMap Feature</h4>
+        </div>
+    </div>
+    <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">Also seen in The Telegraph, Rocketman, Pride, Judge John Deed, London Spy.</p>
+</section>
+
+<!-- INDUSTRY SPECS -->
+<section class="container">
+    <span class="type-sub">Logistics</span>
+    <h2 class="type-heading" style="margin-bottom: 3rem;">Site Specs</h2>
+    
+    <div class="grid-2">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="spec-item">
+                <span class="spec-label">Power</span>
+                <span class="spec-value">3 Phase</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Access</span>
+                <span class="spec-value">24/7</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">Parking</span>
+                <span class="spec-value">On Street</span>
+            </div>
+            <div class="spec-item">
+                <span class="spec-label">WiFi</span>
+                <span class="spec-value">1Gb Fibre</span>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+            <p style="color: var(--text-muted);">
+                We offer flexible hours for set dressing and shooting. The interior retains authentic 1946 tiling and Art Deco styling, requiring minimal dressing for period pieces. Located conveniently in Westminster with street access for equipment loading.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ENQUIRY FORM -->
+<section id="enquire" class="container">
+    <div class="grid-2">
+        <div>
+            <span class="type-sub">Contact</span>
+            <h2 class="type-heading">Enquire Now</h2>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Please provide details regarding your production dates and requirements.</p>
+        </div>
+        
+        <form>
+            <div class="form-group">
+                <label>Production Company</label>
+                <input type="text" placeholder="Company Name">
+            </div>
+            <div class="grid-2" style="gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <label>Contact Name</label>
+                    <input type="text" placeholder="Full Name">
+                </div>
+                <div>
+                    <label>Email Address</label>
+                    <input type="email" placeholder="name@company.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Shoot Details & Dates</label>
+                <textarea rows="4" placeholder="Brief description of requirements..."></textarea>
+            </div>
+            <button type="button" class="btn-submit">Send Enquiry</button>
+        </form>
+    </div>
+</section>
+
+<footer id="contact">
+    <div class="container">
+        <div class="grid-2">
+            <div>
+                <h2 class="type-logo" style="font-size: 2.5rem; margin-bottom: 2rem;">REGENCY CAFE</h2>
+                <p style="margin-bottom: 0.5rem;">17-19 Regency St, Westminster</p>
+                <p style="margin-bottom: 0.5rem;">London SW1P 4BY, UK</p>
+                <p><a href="tel:02078216596" style="color: var(--text-main);">020 7821 6596</a></p>
+            </div>
+            <div>
+                <h4 class="type-sub" style="color: var(--text-muted);">Opening Hours</h4>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;"><span>Mon – Fri</span><span>7:00 – 14:30, 16:00 – 19:15</span></div>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;"><span>Saturday</span><span>7:00 – 12:00</span></div>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; color: #555;"><span>Sunday</span><span>Closed</span></div>
+            </div>
+        </div>
+        <div style="margin-top: 6rem; display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">
+            <span>© 2026 REGENCY CAFE</span>
+            <span><a href="#" style="margin-right: 20px;">Blog</a><a href="#">Cookies</a></span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+    const elements = gsap.utils.toArray('h2, .video-wrapper, .spec-item');
+    elements.forEach(el => {
+        gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 30, opacity: 0, duration: 1.2, ease: "power2.out" });
+    });
+    gsap.to(".fade-in", { y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power2.out", delay: 0.2 });
+
+    function updateTime() {
+        const el = document.getElementById('status-indicator');
+        const now = new Date();
+        const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
+        const hours = londonTime.getHours().toString().padStart(2, '0');
+        const minutes = londonTime.getMinutes().toString().padStart(2, '0');
+        const day = londonTime.getDay();
+        const h = londonTime.getHours();
+        let status = "Closed";
+        if(day >= 1 && day <= 5) {
+            if((h >= 7 && h < 14) || (h === 14 && minutes <= 30) || (h >= 16 && h < 19) || (h === 19 && minutes <= 15)) status = "Open";
+        } else if(day === 6) {
+            if(h >= 7 && h < 12) status = "Open";
+        }
+        el.innerHTML = `London ${hours}:${minutes} — ${status}`;
+        el.style.color = status === "Open" ? "#e6e6e6" : "#a33333";
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+</script>
+</body>
+</html>
