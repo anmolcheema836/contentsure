@@ -82,6 +82,22 @@
             transition: all 0.3s ease;
         }
         .btn-outline:hover { background: var(--text-main); color: var(--bg); }
+        
+        /* Special CTA Button Style */
+        .btn-solid {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--text-main);
+            background: var(--text-main);
+            color: var(--bg);
+            font-family: var(--font-logo);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        .btn-solid:hover { background: transparent; color: var(--text-main); }
 
         /* REVIEW STYLES */
         .review-block { margin-bottom: 3rem; }
@@ -181,9 +197,8 @@
     </div>
 </section>
 
-<!-- REVIEWS (Reduced + Button) -->
+<!-- REVIEWS -->
 <section id="reviews" class="container">
-    <!-- NEW HEADER WITH BUTTON -->
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; flex-wrap: wrap; gap: 2rem;">
         <div>
             <span class="type-sub">The Verdict</span>
@@ -240,6 +255,19 @@
     <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">Also seen in The Telegraph, Rocketman, Pride, Judge John Deed, London Spy.</p>
 </section>
 
+<!-- SHOP / MERCHANDISE (NEW SECTION) -->
+<section id="shop" class="container">
+    <div style="background: rgba(255,255,255,0.03); padding: 5rem 2rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+        <span class="type-sub">Merchandise</span>
+        <h2 class="type-heading" style="margin-bottom: 1.5rem;">Official Gift Set</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Bring a piece of history home. We are now selling the Official Regency Café London Gift Set, which specifically contains a collection of our signature souvenir mugs.
+        </p>
+        <!-- External Link Button -->
+        <a href="https://regencycafe.has.restaurant/merch" target="_blank" class="btn-solid" style="margin-top: 0;">Order Collection Now</a>
+    </div>
+</section>
+
 <!-- FOOTER -->
 <footer id="contact">
     <div class="container">
@@ -266,7 +294,8 @@
 
 <script>
     gsap.registerPlugin(ScrollTrigger);
-    const elements = gsap.utils.toArray('h2, .review-block, .story-img, .video-wrapper');
+    // Added #shop to animation array
+    const elements = gsap.utils.toArray('h2, .review-block, .story-img, .video-wrapper, #shop');
     elements.forEach(el => {
         gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 30, opacity: 0, duration: 1.2, ease: "power2.out" });
     });
