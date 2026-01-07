@@ -67,10 +67,32 @@
         /* Desktop Menu */
         .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
         @media(min-width: 768px) { 
-            .nav-menu { display: flex; } 
+            .nav-menu { display: flex; align-items: center;} 
             .hamburger { display: none !important; }
         }
+/* Order Button Styles */
+    .nav-order-btn {
+        border: 1px solid var(--accent); /* Red border */
+        color: var(--accent) !important; /* Red text */
+        padding: 0.5rem 1.25rem;
+        margin-left: 1rem;
+        transition: all 0.3s ease;
+        display: none; /* Hidden by default, JS turns it on */
+    }
+    
+    .nav-order-btn:hover {
+        background-color: var(--accent);
+        color: #ffffff !important;
+        opacity: 1;
+    }
 
+    /* Adjust for Mobile Menu */
+    .mobile-link.nav-order-btn {
+        margin-left: 0;
+        margin-top: 1rem;
+        border: 1px solid var(--accent);
+        padding: 10px 30px;
+    }
         /* Hamburger Icon - Perfectly Aligned */
         .hamburger {
             display: flex;
@@ -209,12 +231,13 @@
 </head>
 <body>
 
-<!-- MOBILE OVERLAY -->
 <div class="mobile-overlay">
     <a href="#about" class="mobile-link">Story</a>
     <a href="menu.html" class="mobile-link">Menu</a>
     <a href="#reviews" class="mobile-link">Reviews</a>
     <a href="filming.html" class="mobile-link">Filming</a>
+    <!-- NEW ORDER BUTTON -->
+    <a href="https://www.regency-cafe.co.uk/#top" target="_blank" class="mobile-link nav-order-btn">Order Now</a>
 </div>
 
 <!-- NAV -->
@@ -222,12 +245,14 @@
     <a href="regency.html" class="type-logo nav-brand">REGENCY CAFE</a>
     
     <!-- Desktop Menu -->
-    <div class="nav-menu">
-        <a href="#about">Story</a>
-        <a href="menu.html">Menu</a>
-        <a href="#reviews">Reviews</a>
-        <a href="filming.html">Filming</a>
-    </div>
+<div class="nav-menu">
+    <a href="#about">Story</a>
+    <a href="menu.html">Menu</a>
+    <a href="#reviews">Reviews</a>
+    <a href="filming.html">Filming</a>
+    <!-- NEW ORDER BUTTON -->
+    <a href="https://www.regency-cafe.co.uk/#top" target="_blank" class="nav-order-btn">Order Now</a>
+</div>
 
     <!-- Hamburger Trigger -->
     <button class="hamburger" aria-label="Open Menu">
@@ -297,7 +322,7 @@
     <!-- Highlight 2 -->
     <div class="grid-2" style="align-items: center;">
         <div style="order: 2;">
-            <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_9.jpg" alt="Omelette" class="story-img">
+            <img src="https://media-cdn.tripadvisor.com/media/photo-s/1a/a1/a4/42/photo0jpg.jpg" alt="Omelette" class="story-img">
         </div>
         <div style="order: 1;">
             <span class="type-sub" style="color: var(--text-main); margin-bottom: 0.5rem;">Lunch Classic</span>
@@ -405,7 +430,7 @@
         </div>
         <div style="margin-top: 6rem; display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">
             <span>© 2026 REGENCY CAFE</span>
-            <span><a href="#" style="margin-right: 20px;">Cookies</a></span>
+            <span><a href="allergy.html" style="margin-right: 20px;">Allergen Information</a><a href="">Cookies</a></span>
         </div>
     </div>
 </footer>
@@ -453,21 +478,24 @@
         });
     });
 
-   // --- HERO STATUS LOGIC ---
+  // --- HERO STATUS & ORDER BUTTON LOGIC ---
     function updateStatus() {
         const heroStatus = document.getElementById('hero-status');
-        if(!heroStatus) return;
+        // Select both desktop and mobile order buttons
+        const orderButtons = document.querySelectorAll('.nav-order-btn');
         
         const now = new Date();
+        // Force London Time
         const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
         
-        const day = londonTime.getDay(); 
+        const day = londonTime.getDay(); // 0 is Sunday
         const hours = londonTime.getHours();
         const minutes = londonTime.getMinutes();
         const timeDecimal = hours + (minutes / 60);
         
         let isOpen = false;
 
+        // Logic: Mon-Fri (7am-2:30pm & 4pm-7:15pm) | Sat (7am-12pm)
         if (day >= 1 && day <= 5) {
             if ((timeDecimal >= 7 && timeDecimal < 14.5) || (timeDecimal >= 16 && timeDecimal < 19.25)) {
                 isOpen = true;
@@ -478,18 +506,33 @@
             }
         }
 
-        const dotClass = isOpen ? 'dot-open' : 'dot-closed';
-        const color = isOpen ? '#4ade80' : '#ef4444';
-        const text = isOpen ? 'OPEN NOW' : 'CLOSED';
+        // 1. Update Hero Status Dot (If element exists)
+        if(heroStatus) {
+            const dotClass = isOpen ? 'dot-open' : 'dot-closed';
+            const color = isOpen ? '#4ade80' : '#ef4444';
+            const text = isOpen ? 'OPEN NOW' : 'CLOSED';
 
-        heroStatus.innerHTML = `
-            <span class="status-dot ${dotClass}"></span>
-            <span style="color: ${color}; font-weight: 500;">${text}</span>
-        `;
+            heroStatus.innerHTML = `
+                <span class="status-dot ${dotClass}"></span>
+                <span style="color: ${color}; font-weight: 500;">${text}</span>
+            `;
+        }
+
+        // 2. Toggle Order Buttons Visibility
+        orderButtons.forEach(btn => {
+            if (isOpen) {
+                // Use 'inline-block' for buttons to maintain padding/margins
+                btn.style.display = 'inline-block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
     }
 
+    // Run every minute
     setInterval(updateStatus, 60000); 
-    updateStatus(); 
+    // Run immediately on load
+    updateStatus();
 </script>
 </body>
 </html>
