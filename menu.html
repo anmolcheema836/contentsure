@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* --- COPY OF SHARED STYLES --- */
+        /* --- STYLES --- */
         :root { --bg: #080808; --text-main: #e6e6e6; --text-muted: #888888; --accent: #a33333; --font-logo: 'Josefin Sans', sans-serif; --font-serif: 'Playfair Display', serif; --font-sans: 'Inter', sans-serif; --spacing-section: 18vh; --container-width: 1200px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -39,14 +39,15 @@
             mix-blend-mode: difference;
             transition: padding 0.3s ease;
         }
-        .nav-brand { font-size: 1.5rem; line-height: 1; display: block;padding-top: 6px; }
+        .nav-brand { font-size: 1.5rem; line-height: 1; display: block; }
         .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
         @media(min-width: 768px) { 
             .nav-menu { display: flex; } 
             .hamburger { display: none !important; }
+            .nav-brand{padding-top: 6px;}
         }
 
-        /* Hamburger Icon - Perfectly Aligned */
+        /* Hamburger Icon */
         .hamburger {
             display: flex;
             flex-direction: column;
@@ -173,10 +174,10 @@
             <div class="menu-item"><span class="dish-name">Egg, Bacon & Sausage</span><span class="dish-price">£5.90</span></div>
             <div class="menu-item"><span class="dish-name">Egg, Bacon & Tinned Tomatoes</span><span class="dish-price">£5.10</span></div>
             <div class="menu-item"><span class="dish-name">2 Eggs & Chips</span><span class="dish-price">£4.90</span></div>
-            <div class="menu-item"><span class="dish-name">2 Sausages & Chips</span><span class="dish-price">£6.50</span></div>
-            <div class="menu-item"><span class="dish-name">Burger, Egg & Chips</span><span class="dish-price">£6.90</span></div>
-            <div class="menu-item"><span class="dish-name">Cornbeef, Egg & Chips</span><span class="dish-price">£6.20</span></div>
-            <div class="menu-item"><span class="dish-name">Liver & Bacon</span><span class="dish-price">£5.20</span></div>
+            <div class="menu-item"><span class="dish-name">2 Sausages & Chips</span><span class="dish-price">£6.90</span></div>
+            <div class="menu-item"><span class="dish-name">Burger, Egg & Chips</span><span class="dish-price">£6.20</span></div>
+            <div class="menu-item"><span class="dish-name">Cornbeef, Egg & Chips</span><span class="dish-price">£5.20</span></div>
+            <div class="menu-item"><span class="dish-name">Liver & Bacon</span><span class="dish-price">£4.20</span></div>
             <div class="menu-item"><span class="dish-name">2 Eggs on 2 Toast</span><span class="dish-price">£4.20</span></div>
             <div class="menu-item"><span class="dish-name">Baked Beans on 2 Toast</span><span class="dish-price">£4.20</span></div>
         </div>
@@ -217,9 +218,9 @@
             <div class="menu-item"><span class="dish-name">Steak & Kidney Pudding & 2 Veg</span><span class="dish-price">£7.50</span></div>
             <div class="menu-item"><span class="dish-name">Liver, Bacon, Chips & Peas</span><span class="dish-price">£8.60</span></div>
             <div class="menu-item"><span class="dish-name">Minute Steak & Chips</span><span class="dish-price">£8.60</span></div>
-            <div class="menu-item"><span class="dish-name">Gammon & Chips</span><span class="dish-price">£8.60</span></div>
-            <div class="menu-item"><span class="dish-name">Chicken & Chips</span><span class="dish-price">£8.25</span></div>
-            <div class="menu-item"><span class="dish-name">Scampi & Chips</span><span class="dish-price">£9.25</span></div>
+            <div class="menu-item"><span class="dish-name">Gammon & Chips</span><span class="dish-price">£8.25</span></div>
+            <div class="menu-item"><span class="dish-name">Chicken & Chips</span><span class="dish-price">£9.25</span></div>
+            <div class="menu-item"><span class="dish-name">Scampi & Chips</span><span class="dish-price">£6.40</span></div>
             <div class="menu-item"><span class="dish-name">Bacon, Egg & Chips</span><span class="dish-price">£6.40</span></div>
             <div class="menu-item"><span class="dish-name">Ham, Egg & Chips</span><span class="dish-price">£6.20</span></div>
             <div class="menu-item"><span class="dish-name">2 Sausage, Egg & Chips</span><span class="dish-price">£7.70</span></div>
@@ -235,7 +236,7 @@
         <div class="menu-category">
             <h3>Sandwiches / Rolls</h3>
             <div class="menu-item"><span class="dish-name">Bacon</span><span class="dish-price">£3.90 / £3.40</span></div>
-            <div class="menu-item"><span class="dish-name">Sausage</span><span class="dish-price">£3.90 / £2.70</span></div>
+            <div class="menu-item"><span class="dish-name">Sausage</span><span class="dish-price">£3.90 / £3.40</span></div>
             <div class="menu-item"><span class="dish-name">Fried Liver</span><span class="dish-price">£3.60 / £3.10</span></div>
             <div class="menu-item"><span class="dish-name">Fried Egg</span><span class="dish-price">£3.60 / £1.90</span></div>
             <div class="menu-item"><span class="dish-name">Ham</span><span class="dish-price">£3.50 / £3.20</span></div>
