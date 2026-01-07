@@ -111,7 +111,7 @@
         .menu-category h3 { font-family: var(--font-logo); font-size: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 2rem; letter-spacing: 0.1em; }
         .menu-item { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; }
         .dish-name { font-size: 1.1rem; color: var(--text-main); }
-        .dish-price { font-size: 0.9rem; color: var(--text-muted); font-family: var(--font-sans); white-space: nowrap; margin-left: 1rem;}
+        .dish-price { font-size: 0.9rem; color: var(--text-muted); font-family: var(--font-sans); white-space: nowrap; margin-left: 1rem; }
         .dish-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; max-width: 90%; line-height: 1.5; margin-top: -0.25rem; }
         
         footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 6rem 0; font-size: 0.9rem; color: var(--text-muted); }
@@ -176,6 +176,7 @@
             <div class="menu-item"><span class="dish-name">2 Eggs & Chips</span><span class="dish-price">£4.90</span></div>
             <div class="menu-item"><span class="dish-name">2 Sausages & Chips</span><span class="dish-price">£6.50</span></div>
             <div class="menu-item"><span class="dish-name">2 Sausages, Egg & Chips</span><span class="dish-price">£7.50</span></div>
+            <div class="menu-item"><span class="dish-name">Bacon, 2 Eggs & Chips</span><span class="dish-price">£6.10</span></div>
             <div class="menu-item"><span class="dish-name">Burger, Egg & Chips</span><span class="dish-price">£6.90</span></div>
             <div class="menu-item"><span class="dish-name">Cornbeef, Egg & Chips</span><span class="dish-price">£6.20</span></div>
             <div class="menu-item"><span class="dish-name">Liver & Bacon</span><span class="dish-price">£5.20</span></div>
@@ -184,10 +185,10 @@
             <div class="menu-item"><span class="dish-name">Make Your Own Breakfast</span><span class="dish-price">Varies</span></div>
 
             <h3 style="margin-top: 3rem;">Regency Specials</h3>
-            <div class="menu-item"><span class="dish-name">Eggs Benedict w/ Ham</span><span class="dish-price">£6.50</span></div>
+            <div class="menu-item"><span class="dish-name">Eggs Benedict w/ Farmhouse Ham</span><span class="dish-price">£6.50</span></div>
             <p class="dish-desc">Two soft grilled eggs & farmhouse ham on a toasted muffin with hollandaise sauce.</p>
             
-            <div class="menu-item"><span class="dish-name">Eggs Benedict w/ Salmon</span><span class="dish-price">£8.50</span></div>
+            <div class="menu-item"><span class="dish-name">Eggs Benedict w/ Smoked Salmon</span><span class="dish-price">£8.50</span></div>
             <p class="dish-desc">Two soft grilled eggs & smoked salmon on a toasted muffin with hollandaise sauce.</p>
 
             <div class="menu-item"><span class="dish-name">Eggs Benedict Vegetarian</span><span class="dish-price">£5.50</span></div>
@@ -203,18 +204,22 @@
             <div class="menu-item"><span class="dish-name">Mushrooms</span><span class="dish-price">£1.90</span></div>
             <div class="menu-item"><span class="dish-name">Fried / Grill / Tinned Tomatoes</span><span class="dish-price">£1.50 - £1.70</span></div>
             <div class="menu-item"><span class="dish-name">Homemade Chips</span><span class="dish-price">£3.50</span></div>
-            <div class="menu-item"><span class="dish-name">Fried Egg / Fried Slice</span><span class="dish-price">£0.60 / £1.00</span></div>
+            <div class="menu-item"><span class="dish-name">Half Chips</span><span class="dish-price">£1.70</span></div>
+            <div class="menu-item"><span class="dish-name">Fried Egg</span><span class="dish-price">£0.60</span></div>
             <div class="menu-item"><span class="dish-name">Scrambled Egg</span><span class="dish-price">£2.40</span></div>
             <div class="menu-item"><span class="dish-name">Bacon / Ham / Corn Beef</span><span class="dish-price">£2.50 - £2.70</span></div>
+            <div class="menu-item"><span class="dish-name">Sausage</span><span class="dish-price">£2.00</span></div>
             <div class="menu-item"><span class="dish-name">Fried Liver</span><span class="dish-price">£2.40</span></div>
             
             <div style="margin-top: 1rem;"></div>
             <div class="menu-item"><span class="dish-name">2 Toast / 2 Bread (Butter)</span><span class="dish-price">£1.70 / £1.20</span></div>
             <div class="menu-item"><span class="dish-name">Roll (Butter)</span><span class="dish-price">£0.70</span></div>
+            <div class="menu-item"><span class="dish-name">Fried Slice</span><span class="dish-price">£1.00</span></div>
             <div class="menu-item"><span class="dish-name">Jam / Marmalade</span><span class="dish-price">£0.50</span></div>
+            <div class="menu-item"><span class="dish-name">Donut</span><span class="dish-price">£3.00</span></div>
             
             <div style="margin-top: 1rem;"></div>
-            <div class="menu-item"><span class="dish-name">Vegetables (Carrots/Peas/Cabbage)</span><span class="dish-price">£0.50 ea</span></div>
+            <div class="menu-item"><span class="dish-name">Carrots / Peas / Cabbage</span><span class="dish-price">£0.50 ea</span></div>
             <div class="menu-item"><span class="dish-name">Fried Onions / Boiled Potatoes</span><span class="dish-price">£0.50 ea</span></div>
             
             <h3 style="margin-top: 3rem;">Omelettes</h3>
@@ -240,13 +245,14 @@
             <div class="menu-item"><span class="dish-name">Steak & Kidney Pudding & 2 Veg</span><span class="dish-price">£7.50</span></div>
             <div class="menu-item"><span class="dish-name">Liver, Bacon, Chips & Peas</span><span class="dish-price">£8.60</span></div>
             <div class="menu-item"><span class="dish-name">Minute Steak & Chips</span><span class="dish-price">£8.60</span></div>
-            <div class="menu-item"><span class="dish-name">Gammon & Chips</span><span class="dish-price">£8.60</span></div>
+            <div class="menu-item"><span class="dish-name">Gammon Steak & Chips</span><span class="dish-price">£8.60</span></div>
             <div class="menu-item"><span class="dish-name">Chicken & Chips</span><span class="dish-price">£8.25</span></div>
-            <div class="menu-item"><span class="dish-name">Scampi & Chips / Salad</span><span class="dish-price">£9.25</span></div>
+            <div class="menu-item"><span class="dish-name">Scampi & Chips</span><span class="dish-price">£9.25</span></div>
+            <div class="menu-item"><span class="dish-name">Scampi & Salad</span><span class="dish-price">£9.25</span></div>
             <div class="menu-item"><span class="dish-name">Bacon, Egg & Chips</span><span class="dish-price">£6.40</span></div>
             <div class="menu-item"><span class="dish-name">Ham, Egg & Chips</span><span class="dish-price">£6.20</span></div>
-            <div class="menu-item"><span class="dish-name">2 Sausage, Egg & Chips</span><span class="dish-price">£7.50</span></div>
-            <div class="menu-item"><span class="dish-name">2 Sausage, Chips & Beans</span><span class="dish-price">£7.50</span></div>
+            <div class="menu-item"><span class="dish-name">2 Sausages, Egg & Chips</span><span class="dish-price">£7.50</span></div>
+            <div class="menu-item"><span class="dish-name">2 Sausages, Chips & Beans</span><span class="dish-price">£7.50</span></div>
             
             <p class="dish-desc" style="margin-top: 1rem; color: var(--text-main);"><strong>Chicken Escalope with:</strong></p>
             <div class="menu-item"><span class="dish-name">Chips</span><span class="dish-price">£8.60</span></div>
@@ -274,18 +280,22 @@
             <div class="menu-item"><span class="dish-name">Fried Liver</span><span class="dish-price">£3.60</span></div>
             <div class="menu-item"><span class="dish-name">Fried Egg</span><span class="dish-price">£3.60</span></div>
             <div class="menu-item"><span class="dish-name">Ham</span><span class="dish-price">£3.50</span></div>
-            <div class="menu-item"><span class="dish-name">Cheese / Cornbeef</span><span class="dish-price">£2.50</span></div>
+            <div class="menu-item"><span class="dish-name">Cheese</span><span class="dish-price">£2.50</span></div>
+            <div class="menu-item"><span class="dish-name">Corned Beef</span><span class="dish-price">£2.50</span></div>
         </div>
 
         <!-- BURGERS / PASTA / PIES -->
         <div class="menu-category">
             <h3>Burgers, Pasta & Pies</h3>
-            <div class="menu-item"><span class="dish-name">6oz Large Burger</span><span class="dish-price">£5.85</span></div>
-            <div class="menu-item"><span class="dish-name">6oz Large Cheese Burger</span><span class="dish-price">£6.85</span></div>
+            <div class="menu-item"><span class="dish-name">Burger Egg & Chips</span><span class="dish-price">£6.90</span></div>
             <div class="menu-item"><span class="dish-name">4oz Small Burger</span><span class="dish-price">£4.85</span></div>
             <div class="menu-item"><span class="dish-name">4oz Small Cheese Burger</span><span class="dish-price">£5.85</span></div>
-            <div class="menu-item"><span class="dish-name">Chicken Burger / Cheese</span><span class="dish-price">£5.00 / £6.00</span></div>
-            <div class="menu-item"><span class="dish-name">Veggie Burger / Cheese</span><span class="dish-price">£4.85 / £5.85</span></div>
+            <div class="menu-item"><span class="dish-name">6oz Large Burger</span><span class="dish-price">£5.85</span></div>
+            <div class="menu-item"><span class="dish-name">6oz Large Cheese Burger</span><span class="dish-price">£6.85</span></div>
+            <div class="menu-item"><span class="dish-name">Veggie Burger</span><span class="dish-price">£4.85</span></div>
+            <div class="menu-item"><span class="dish-name">Veggie Cheese Burger</span><span class="dish-price">£5.85</span></div>
+            <div class="menu-item"><span class="dish-name">Chicken Burger</span><span class="dish-price">£5.00</span></div>
+            <div class="menu-item"><span class="dish-name">Chicken Cheese Burger</span><span class="dish-price">£6.00</span></div>
             
             <div style="margin-top: 1.5rem;"></div>
             <div class="menu-item"><span class="dish-name">Spaghetti Bolognese</span><span class="dish-price">£9.30</span></div>
@@ -305,7 +315,6 @@
             <h3>Desserts</h3>
             <div class="menu-item"><span class="dish-name">Homemade Bread & Butter Pudding</span><span class="dish-price">£4.90</span></div>
             <p class="dish-desc">Served with Custard OR Ice Cream</p>
-            <div class="menu-item"><span class="dish-name">Donut</span><span class="dish-price">£3.00</span></div>
         </div>
 
          <!-- DRINKS -->
@@ -314,7 +323,8 @@
             <div class="menu-item"><span class="dish-name">Tea</span><span class="dish-price">£1.70</span></div>
             <div class="menu-item"><span class="dish-name">Coffee / Hot Chocolate</span><span class="dish-price">£1.90</span></div>
             <div class="menu-item"><span class="dish-name">Glass of Milk</span><span class="dish-price">£1.15</span></div>
-            <div class="menu-item"><span class="dish-name">Cans (Cola/Rio/Dr Pepper)</span><span class="dish-price">£1.70</span></div>
+            <div class="menu-item"><span class="dish-name">Cans 330ml</span><span class="dish-price">£1.70</span></div>
+            <p class="dish-desc">Coca Cola, Diet Cola, Fanta, Rio, Dr Pepper</p>
             <div class="menu-item"><span class="dish-name">Water / Sparkling</span><span class="dish-price">£1.70</span></div>
             <div class="menu-item"><span class="dish-name">Orange Juice / Lucozade</span><span class="dish-price">£2.80</span></div>
             <div class="menu-item"><span class="dish-name">Ice Tea / Milkshake</span><span class="dish-price">£2.80</span></div>
