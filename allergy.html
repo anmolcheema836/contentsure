@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allergens | Regency Café</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* --- CORE STYLES (MATCHING MENU.HTML) --- */
+        :root { --bg: #080808; --card-bg: #111111; --text-main: #e6e6e6; --text-muted: #888888; --accent: #a33333; --warning: #d4a017; --font-logo: 'Josefin Sans', sans-serif; --font-serif: 'Playfair Display', serif; --font-sans: 'Inter', sans-serif; --container-width: 1200px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: var(--font-sans); font-weight: 300; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        
+        /* TYPOGRAPHY */
+        h1, h2, h3, h4 { color: var(--text-main); font-weight: 400; }
+        .type-logo { font-family: var(--font-logo); font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; line-height: 1; }
+        .type-heading { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; }
+        .type-sub { font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 2rem; display: block; }
+        
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 2rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+        @media(min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; gap: 6rem; } }
+        
+        a { text-decoration: none; color: inherit; transition: opacity 0.3s; } a:hover { opacity: 0.7; }
+
+        /* NAVIGATION & HAMBURGER */
+        nav { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 2.5rem 3rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 100;
+            mix-blend-mode: difference;
+            transition: padding 0.3s ease;
+        }
+        .nav-brand { font-size: 1.5rem; line-height: 1; display: block; padding-top: 6px;}
+        .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        @media(min-width: 768px) { 
+            .nav-menu { display: flex; } 
+            .hamburger { display: none !important; }
+        }
+
+        /* Hamburger Icon */
+        .hamburger {
+            display: flex; flex-direction: column; justify-content: center; gap: 6px;
+            cursor: pointer; background: none; border: none; padding: 0; height: 20px; width: 30px;
+        }
+        .bar { width: 100%; height: 2px; background-color: #e6e6e6; transition: all 0.3s ease; transform-origin: center; }
+        .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active .bar:nth-child(2) { opacity: 0; }
+        .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--bg); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 90;
+            opacity: 0; pointer-events: none;
+        }
+        .mobile-link {
+            font-family: var(--font-logo); font-size: 2rem; margin: 1.5rem 0;
+            color: var(--text-main); text-transform: uppercase; letter-spacing: 0.1em;
+            opacity: 0; transform: translateY(20px);
+        }
+        @media (max-width: 768px) { nav { padding: 1.5rem; } }
+
+        /* HEADER */
+        header { height: 50vh; display: flex; align-items: flex-end; padding-bottom: 4rem; position: relative; }
+        .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: grayscale(100%); z-index: -2; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.8) 80%, rgba(5,5,5,1) 100%); z-index: -1; }
+        
+        /* DISCLAIMER BOX */
+        .disclaimer-box {
+            background: rgba(163, 51, 51, 0.1);
+            border: 1px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 3rem;
+            font-size: 0.9rem;
+            color: #ffcccc;
+            line-height: 1.6;
+        }
+
+        /* --- FILTERS (STICKY TOP) --- */
+        .filter-wrapper {
+            position: sticky;
+            top: 0; 
+            background: var(--bg);
+            z-index: 50;
+            padding: 1rem 0 2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.8);
+            margin-left: -2rem; margin-right: -2rem; padding-left: 2rem; padding-right: 2rem; /* Bleed to edge */
+        }
+
+     .filter-scroll {
+    display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    /* ADDED CURSOR STYLES */
+    cursor: grab; 
+    user-select: none; /* Prevents text highlighting while dragging */
+}
+.filter-scroll:active {
+    cursor: grabbing;
+}
+        .filter-scroll::-webkit-scrollbar { display: none; }
+        
+        .filter-btn {
+            background: var(--card-bg); border: 1px solid #333; color: var(--text-muted);
+            padding: 0.6rem 1.2rem; border-radius: 50px; font-family: var(--font-sans);
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;
+            cursor: pointer; white-space: nowrap; transition: all 0.3s ease;
+        }
+        .filter-btn:hover { border-color: #666; color: var(--text-main); }
+        .filter-btn.active { background: var(--text-main); color: var(--bg); border-color: var(--text-main); font-weight: 500; }
+
+        /* ALLERGEN GRID */
+        .menu-category-title {
+            font-family: var(--font-logo); font-size: 1.5rem; margin: 3rem 0 1.5rem 0;
+            border-bottom: 1px solid #333; padding-bottom: 0.5rem; color: var(--text-main);
+        }
+        .allergen-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media(min-width: 768px) { .allergen-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+
+        .dish-card {
+            background: var(--card-bg); padding: 1.5rem; border-radius: 8px;
+            border: 1px solid #222; transition: opacity 0.3s ease, transform 0.3s ease, border 0.3s ease;
+        }
+        .dish-card.dimmed { opacity: 0.2; pointer-events: none; filter: grayscale(100%); }
+        .dish-card.highlight-red { border-color: var(--accent); box-shadow: 0 0 15px rgba(163, 51, 51, 0.2); }
+
+        .dish-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
+        .dish-name { font-size: 1.1rem; color: var(--text-main); font-weight: 400; }
+        .dish-price { color: var(--text-muted); font-size: 0.9rem; white-space: nowrap; margin-left: 1rem; }
+
+        .tags-container { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        
+        .tag {
+            font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 4px;
+            text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;
+        }
+        .tag-contains { background: rgba(163, 51, 51, 0.15); color: #ff6b6b; border: 1px solid rgba(163, 51, 51, 0.4); }
+        .tag-may { background: rgba(212, 160, 23, 0.1); color: #ffd700; border: 1px solid rgba(212, 160, 23, 0.3); }
+        .tag-safe { background: #1a1a1a; color: #555; border: 1px solid #333; }
+        
+        /* FOOTER (MATCHING MENU.HTML) */
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 6rem 0; font-size: 0.9rem; color: var(--text-muted); margin-top: 6rem; }
+        .fade-in { opacity: 0; transform: translateY(20px); }
+    </style>
+</head>
+<body>
+
+<!-- MOBILE OVERLAY -->
+<div class="mobile-overlay">
+    <a href="regency.html#about" class="mobile-link">Story</a>
+    <a href="menu.html" class="mobile-link">Menu</a>
+    <a href="filming.html" class="mobile-link">Filming</a>
+    <!-- Active State for Allergy Page -->
+    <a href="allergy.html" class="mobile-link" style="color: var(--accent);">Allergens</a>
+</div>
+
+<nav>
+    <a href="regency.html" class="type-logo nav-brand">REGENCY CAFE</a>
+    
+    <!-- Desktop Menu -->
+    <div class="nav-menu">
+        <a href="regency.html#about">Story</a>
+        <a href="menu.html">Menu</a>
+        <a href="filming.html">Filming</a>
+    </div>
+
+    <!-- Hamburger -->
+    <button class="hamburger" aria-label="Open Menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+</nav>
+
+<header>
+    <div class="hero-overlay"></div>
+    <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_10.jpg" alt="Menu Header" class="hero-img">
+    <div class="container" style="width: 100%;">
+        <span class="type-sub fade-in">Dietary Information</span>
+        <h1 class="type-heading fade-in">Allergen Guide</h1>
+    </div>
+</header>
+
+<main class="container">
+    
+    <!-- Disclaimer -->
+    <div class="disclaimer-box fade-in">
+        <h4 style="color: var(--accent); margin-bottom: 0.5rem; font-family: var(--font-logo);">Consumer Advisory</h4>
+        We operate a small open kitchen. While we take care to prevent cross-contamination, we cannot guarantee that any item is 100% allergen-free due to shared cooking surfaces (e.g. Grills, Fryers).<br>
+        <strong>A</strong> = Contains Ingredient &nbsp;|&nbsp; <strong>M</strong> = May Contain (Cross-contact risk)
+    </div>
+
+    <!-- Filter Bar (Sticks to Top) -->
+    <div class="filter-wrapper fade-in">
+        <div class="filter-scroll" id="filterContainer">
+            <!-- JS will inject buttons here -->
+            <button class="filter-btn active" onclick="resetFilters()">View All</button>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.8rem; color: #666; text-align: center;">
+            Tap an allergen to highlight dishes containing it.
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div id="menuContainer">
+        <!-- JS will inject Menu Sections Here -->
+    </div>
+
+</main>
+
+<footer id="contact">
+    <div class="container">
+        <div class="grid-2">
+            <div>
+                <h2 class="type-logo" style="font-size: 2.5rem; margin-bottom: 2rem;">REGENCY CAFE</h2>
+                <p style="margin-bottom: 0.5rem;">17-19 Regency St, Westminster</p>
+                <p style="margin-bottom: 0.5rem;">London SW1P 4BY, UK</p>
+                <p><a href="tel:02078216596" style="color: var(--text-main);">020 7821 6596</a></p>
+            </div>
+            <div>
+                <h4 class="type-sub" style="color: var(--text-muted);">Opening Hours</h4>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;"><span>Mon – Fri</span><span>7:00 – 14:15</span></div>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; margin-bottom: 0.5rem;"><span>Saturday</span><span>7:00 – 12:15</span></div>
+                <div style="display: flex; justify-content: space-between; max-width: 300px; color: #555;"><span>Sunday</span><span>Closed</span></div>
+            </div>
+        </div>
+        <div style="margin-top: 6rem; display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">
+            <span>© 2026 REGENCY CAFE</span>
+            <span><a href="#" style="margin-right: 20px;">Cookies</a></span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // --- 1. DATA CONFIGURATION (Matched to menu.html items) ---
+    // Note: Allergens are estimates based on standard British greasy spoon ingredients.
+    const allergensList = [
+        "Gluten", "Crustaceans", "Eggs", "Fish", "Peanuts", "Soy", "Milk", 
+        "Nuts", "Celery", "Mustard", "Sesame", "Sulphites", "Lupin", "Molluscs"
+    ];
+
+    const menuData = [
+        {
+            category: "Set Breakfast",
+            items: [
+                { name: "The Full Set Deal", price: "£9.99", contains: ["Gluten", "Eggs", "Sulphites"], may: ["Milk", "Soy", "Mustard"] }
+            ]
+        },
+        {
+            category: "Breakfast Items",
+            items: [
+                { name: "Egg & 2 Bacon", price: "£3.90", contains: ["Eggs"], may: ["Gluten", "Soy", "Sulphites"] },
+                { name: "Egg, Sausage & Beans", price: "£4.10", contains: ["Eggs", "Gluten", "Sulphites"], may: ["Soy", "Mustard"] },
+                { name: "Egg, Bacon & Sausage", price: "£5.90", contains: ["Eggs", "Gluten", "Sulphites"], may: ["Soy", "Mustard"] },
+                { name: "2 Eggs & Chips", price: "£4.90", contains: ["Eggs"], may: ["Gluten"] },
+                { name: "2 Sausages & Chips", price: "£6.50", contains: ["Gluten", "Sulphites"], may: ["Soy", "Mustard"] },
+                { name: "Burger, Egg & Chips", price: "£6.90", contains: ["Eggs", "Gluten"], may: ["Milk", "Soy", "Sulphites"] },
+                { name: "Corned Beef, Egg & Chips", price: "£6.20", contains: ["Eggs"], may: ["Gluten", "Soy"] },
+                { name: "Liver & Bacon", price: "£5.20", contains: [], may: ["Gluten"] },
+                { name: "2 Eggs on 2 Toast", price: "£4.20", contains: ["Eggs", "Gluten", "Milk"], may: [] },
+                { name: "Baked Beans on 2 Toast", price: "£4.20", contains: ["Gluten"], may: ["Soy"] }
+            ]
+        },
+        {
+            category: "Regency Specials",
+            items: [
+                { name: "Eggs Benedict (Ham)", price: "£6.50", contains: ["Gluten", "Eggs", "Milk", "Sulphites"], may: ["Mustard"] },
+                { name: "Eggs Benedict (Salmon)", price: "£8.50", contains: ["Gluten", "Eggs", "Milk", "Fish", "Sulphites"], may: ["Mustard"] },
+                { name: "Eggs Benedict (Veg)", price: "£5.50", contains: ["Gluten", "Eggs", "Milk", "Sulphites"], may: ["Mustard"] }
+            ]
+        },
+        {
+            category: "Extras & Sides",
+            items: [
+                { name: "Bubble & Squeak", price: "£1.75", contains: [], may: ["Milk", "Sulphites"] },
+                { name: "Hash Browns (2)", price: "£1.75", contains: [], may: ["Gluten"] },
+                { name: "Black Pudding (2)", price: "£1.75", contains: ["Gluten"], may: ["Soy"] },
+                { name: "Mushrooms", price: "£1.90", contains: [], may: ["Milk"] },
+                { name: "Homemade Chips", price: "£3.50", contains: [], may: ["Gluten"] },
+                { name: "Toast / Bread", price: "£1.20", contains: ["Gluten", "Milk"], may: ["Soy"] },
+                { name: "Fried Slice", price: "£1.00", contains: ["Gluten"], may: ["Soy"] },
+                { name: "Donut", price: "£3.00", contains: ["Gluten", "Milk", "Eggs"], may: ["Nuts", "Soy"] }
+            ]
+        },
+        {
+            category: "Lunch & Mains",
+            items: [
+                { name: "Braised Steak", price: "£10.50", contains: ["Gluten", "Celery", "Sulphites"], may: [] },
+                { name: "Chicken Curry", price: "£10.50", contains: ["Mustard", "Celery"], may: ["Milk", "Gluten"] },
+                { name: "Fish & Chips", price: "£12.50", contains: ["Fish", "Gluten"], may: ["Milk", "Molluscs"] },
+                { name: "Steak Pie / Pudding", price: "£9.60", contains: ["Gluten", "Celery"], may: ["Milk", "Eggs"] },
+                { name: "Scampi & Chips", price: "£9.25", contains: ["Crustaceans", "Gluten"], may: ["Fish", "Milk", "Molluscs"] },
+                { name: "Chicken Escalope", price: "£8.60", contains: ["Gluten", "Eggs"], may: ["Milk"] }
+            ]
+        },
+        {
+            category: "Burgers & Pasta",
+            items: [
+                { name: "Beef Burger", price: "Var", contains: ["Gluten", "Sulphites"], may: ["Milk", "Sesame", "Soy"] },
+                { name: "Chicken Burger", price: "£5.00", contains: ["Gluten"], may: ["Milk", "Sesame", "Celery"] },
+                { name: "Spaghetti Bolognese", price: "£9.30", contains: ["Gluten", "Celery", "Eggs"], may: ["Milk"] },
+                { name: "Penne Al Pesto", price: "£9.30", contains: ["Gluten", "Milk", "Nuts", "Eggs"], may: [] }
+            ]
+        },
+        {
+            category: "Desserts",
+            items: [
+                { name: "Bread & Butter Pudding", price: "£4.90", contains: ["Gluten", "Eggs", "Milk", "Sulphites"], may: ["Nuts", "Soy"] }
+            ]
+        }
+    ];
+
+    // --- 2. RENDER FUNCTIONS ---
+
+    function renderFilters() {
+        const container = document.getElementById('filterContainer');
+        allergensList.forEach(allergen => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.textContent = allergen;
+            btn.onclick = () => toggleFilter(allergen, btn);
+            container.appendChild(btn);
+        });
+    }
+
+    function renderMenu() {
+        const container = document.getElementById('menuContainer');
+        container.innerHTML = ''; 
+
+        menuData.forEach(section => {
+            const sectionDiv = document.createElement('div');
+            
+            // Section Title
+            const title = document.createElement('h3');
+            title.className = 'menu-category-title';
+            title.textContent = section.category;
+            sectionDiv.appendChild(title);
+
+            // Grid
+            const grid = document.createElement('div');
+            grid.className = 'allergen-grid';
+
+            section.items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'dish-card';
+                
+                let tagsHtml = '';
+                
+                // Contains Tags
+                if(item.contains.length > 0) {
+                    item.contains.forEach(alg => {
+                        tagsHtml += `<span class="tag tag-contains">Contains ${alg}</span>`;
+                    });
+                }
+                
+                // May Contain Tags
+                if(item.may.length > 0) {
+                    item.may.forEach(alg => {
+                        tagsHtml += `<span class="tag tag-may">May Contain ${alg}</span>`;
+                    });
+                }
+
+                if(item.contains.length === 0 && item.may.length === 0) {
+                    tagsHtml += `<span class="tag tag-safe">No 14 Declared</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="dish-header">
+                        <span class="dish-name">${item.name}</span>
+                        <span class="dish-price">${item.price}</span>
+                    </div>
+                    <div class="tags-container">
+                        ${tagsHtml}
+                    </div>
+                `;
+                
+                // Store data for filtering
+                const allAllergens = [...item.contains, ...item.may];
+                card.dataset.allergens = JSON.stringify(allAllergens);
+                
+                grid.appendChild(card);
+            });
+
+            sectionDiv.appendChild(grid);
+            container.appendChild(sectionDiv);
+        });
+    }
+
+    // --- 3. FILTER LOGIC ---
+    let activeFilter = null;
+
+    function toggleFilter(allergen, btnElement) {
+        // Reset styles
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        
+        if (activeFilter === allergen) {
+            // Deactivate
+            activeFilter = null;
+            document.querySelectorAll('.filter-btn')[0].classList.add('active'); // "View All" active
+            resetFilters();
+        } else {
+            // Activate
+            activeFilter = allergen;
+            btnElement.classList.add('active');
+            applyFilter(allergen);
+        }
+    }
+
+    function resetFilters() {
+        activeFilter = null;
+        document.querySelectorAll('.filter-btn').forEach((b, i) => { 
+            if(i === 0) b.classList.add('active'); 
+            else b.classList.remove('active');
+        });
+        
+        document.querySelectorAll('.dish-card').forEach(card => {
+            card.classList.remove('dimmed', 'highlight-red');
+        });
+    }
+
+    function applyFilter(allergen) {
+        document.querySelectorAll('.dish-card').forEach(card => {
+            const dishAllergens = JSON.parse(card.dataset.allergens);
+            
+            // Clean up previous states
+            card.classList.remove('highlight-red');
+            
+            if (dishAllergens.includes(allergen)) {
+                // Keep visible and highlight
+                card.classList.remove('dimmed');
+                card.classList.add('highlight-red');
+            } else {
+                // Dim it
+                card.classList.add('dimmed');
+            }
+        });
+    }
+
+    // --- 4. INIT ---
+    window.addEventListener('DOMContentLoaded', () => {
+        renderFilters();
+        renderMenu();
+        // --- DRAG TO SCROLL LOGIC FOR MOUSE ---
+    const slider = document.getElementById('filterContainer');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.style.cursor = 'grabbing';
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.style.cursor = 'grab';
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.style.cursor = 'grab';
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll speed multiplier
+        slider.scrollLeft = scrollLeft - walk;
+    });
+        
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".fade-in", { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power2.out" });
+        
+        const elements = gsap.utils.toArray('.menu-category-title, .allergen-grid');
+        elements.forEach(el => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 20, opacity: 0, duration: 0.8 });
+        });
+
+        // --- HAMBURGER MENU LOGIC ---
+        const burger = document.querySelector('.hamburger');
+        const mobileMenu = document.querySelector('.mobile-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const body = document.body;
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            
+            if(burger.classList.contains('active')) {
+                // Open
+                body.style.overflow = 'hidden';
+                gsap.to(mobileMenu, { opacity: 1, pointerEvents: "all", duration: 0.5 });
+                gsap.fromTo(mobileLinks, 
+                    { y: 30, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.1, ease: "power2.out" }
+                );
+            } else {
+                // Close
+                body.style.overflow = '';
+                gsap.to(mobileMenu, { opacity: 0, pointerEvents: "none", duration: 0.5 });
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                body.style.overflow = '';
+                gsap.to(mobileMenu, { opacity: 0, pointerEvents: "none", duration: 0.5 });
+            });
+        });
+    });
+
+</script>
+</body>
+</html>
