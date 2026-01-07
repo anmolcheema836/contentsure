@@ -48,7 +48,7 @@
             .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
         }
 
-        /* NAVIGATION */
+        /* NAVIGATION & HAMBURGER */
         nav { 
             position: fixed; 
             top: 0; 
@@ -57,16 +57,75 @@
             padding: 2.5rem 3rem; 
             display: flex; 
             justify-content: space-between; 
-            align-items: center; 
-            z-index: 50; 
-            mix-blend-mode: difference; 
+            align-items: center; /* Ensures Vertical Alignment of Logo and Hamburger */
+            z-index: 100; /* Higher than overlay */
+            mix-blend-mode: difference; /* This creates the transparency/inversion effect for BOTH logo and hamburger */
             transition: padding 0.3s ease;
         }
-        .nav-brand { font-size: 1.5rem; white-space: nowrap; }
-        .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-brand { font-size: 1.5rem; white-space: nowrap; line-height: 1; display: block;padding-top: 6px; }
         
+        /* Desktop Menu */
+        .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
         @media(min-width: 768px) { 
             .nav-menu { display: flex; } 
+            .hamburger { display: none !important; }
+        }
+
+        /* Hamburger Icon - Perfectly Aligned */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0; /* Removing padding ensures exact alignment with logo text */
+            height: 20px; /* Explicit height for click area */
+            width: 30px;
+        }
+        .bar {
+            width: 100%;
+            height: 2px;
+            background-color: #e6e6e6; /* Uses the same color as text to blend perfectly */
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        
+        /* Hamburger Active State (X) */
+        .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active .bar:nth-child(2) { opacity: 0; }
+        .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 90; /* Lower than Nav so Nav blend mode works on top of it */
+            opacity: 0;
+            pointer-events: none; 
+        }
+        .mobile-link {
+            font-family: var(--font-logo);
+            font-size: 2rem;
+            margin: 1.5rem 0;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0; 
+            transform: translateY(20px);
+        }
+        
+        @media (max-width: 768px) {
+            nav { padding: 1.5rem; }
         }
 
         /* HERO */
@@ -74,7 +133,6 @@
             height: 90vh; 
             display: flex; 
             align-items: flex-end; 
-            /* Raised the text by increasing bottom padding */
             padding-bottom: 15vh; 
             position: relative; 
         }
@@ -150,15 +208,32 @@
 </head>
 <body>
 
+<!-- MOBILE OVERLAY -->
+<div class="mobile-overlay">
+    <a href="#about" class="mobile-link">Story</a>
+    <a href="menu.html" class="mobile-link">Menu</a>
+    <a href="#reviews" class="mobile-link">Reviews</a>
+    <a href="filming.html" class="mobile-link">Filming</a>
+</div>
+
 <!-- NAV -->
 <nav>
     <a href="regency.html" class="type-logo nav-brand">REGENCY CAFE</a>
+    
+    <!-- Desktop Menu -->
     <div class="nav-menu">
         <a href="#about">Story</a>
         <a href="menu.html">Menu</a>
         <a href="#reviews">Reviews</a>
         <a href="filming.html">Filming</a>
     </div>
+
+    <!-- Hamburger Trigger -->
+    <button class="hamburger" aria-label="Open Menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
 </nav>
 
 <!-- HERO -->
@@ -166,7 +241,7 @@
     <div class="hero-overlay"></div>
     <img src="https://assets-eu-01.kc-usercontent.com/6bb3df3c-b648-01ae-2357-22fa5c7d5f19/23f0f2b9-dfbf-41f0-8ffb-aebadacdc444/The%20Regency%20Cafe%20Image.jpg" alt="Interior" class="hero-img">
     <div class="container" style="width: 100%;">
-        <div class="type-sub fade-in" style="display: flex; align-items: center;">
+        <div class="type-sub fade-in" style="display: flex; align-items: center; flex-wrap: wrap;">
             <span>Est. 1946 — Westminster, London</span>
             <!-- NEW STATUS INDICATOR -->
             <div id="hero-status" class="hero-status-wrapper">
@@ -203,7 +278,6 @@
 <!-- HIGHLIGHT MENU -->
 <section id="menu" class="container">
     <div style="text-align: center; margin-bottom: 6rem;">
-        <!-- Removed "The Menu" label as requested -->
         <h2 class="type-heading">No Substitutions.</h2>
         <p style="color: var(--text-muted); margin-top: 1rem;">Authentic English breakfast for excellent value.</p>
     </div>
@@ -285,10 +359,9 @@
             </div>
             <h4 class="dish-name" style="margin-top: 1rem;">Warriors (1999)</h4>
         </div>
-        <!-- CHANGED TO PRIDE -->
         <div>
             <div class="video-wrapper">
-               <iframe width="560" height="315" src="https://www.youtube.com/embed/RjhUy6q3TMA?si=dVvf2SvSQYSLKr6a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RjhUy6q3TMA?si=dVvf2SvSQYSLKr6a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <h4 class="dish-name" style="margin-top: 1rem;">Pride (2014)</h4>
         </div>
@@ -305,7 +378,6 @@
         <p style="color: var(--text-muted); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
             Bring a piece of history home. We are now selling the Official Regency Café London Gift Set, which specifically contains a collection of our signature souvenir mugs.
         </p>
-        <!-- Updated CTA Text -->
         <a href="https://regency-cafe.co.uk" target="_blank" class="btn-solid" style="margin-top: 0;">
             Join the Waitlist
         </a>
@@ -332,7 +404,7 @@
         </div>
         <div style="margin-top: 6rem; display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">
             <span>© 2026 REGENCY CAFE</span>
-            <span><a href="#" style="margin-right: 20px;">Blog</a><a href="#">Cookies</a></span>
+            <span><a href="#" style="margin-right: 20px;">Cookies</a></span>
         </div>
     </div>
 </footer>
@@ -340,28 +412,59 @@
 <script>
     gsap.registerPlugin(ScrollTrigger);
     
+    // Page Animations
     const elements = gsap.utils.toArray('h2, .review-block, .story-img, .video-wrapper, #shop');
     elements.forEach(el => {
         gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 30, opacity: 0, duration: 1.2, ease: "power2.out" });
     });
     gsap.to(".fade-in", { y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power2.out", delay: 0.2 });
 
+    // --- HAMBURGER MENU LOGIC ---
+    const burger = document.querySelector('.hamburger');
+    const mobileMenu = document.querySelector('.mobile-overlay');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    const body = document.body;
+
+    burger.addEventListener('click', () => {
+        burger.classList.toggle('active');
+        
+        if(burger.classList.contains('active')) {
+            // Open Menu
+            body.style.overflow = 'hidden'; // Prevent scrolling
+            gsap.to(mobileMenu, { opacity: 1, pointerEvents: "all", duration: 0.5 });
+            gsap.fromTo(mobileLinks, 
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.1, ease: "power2.out" }
+            );
+        } else {
+            // Close Menu
+            body.style.overflow = '';
+            gsap.to(mobileMenu, { opacity: 0, pointerEvents: "none", duration: 0.5 });
+        }
+    });
+
+    // Close menu when a link is clicked
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            burger.classList.remove('active');
+            body.style.overflow = '';
+            gsap.to(mobileMenu, { opacity: 0, pointerEvents: "none", duration: 0.5 });
+        });
+    });
+
    // --- HERO STATUS LOGIC ---
     function updateStatus() {
         const heroStatus = document.getElementById('hero-status');
         if(!heroStatus) return;
         
-        // Get London Time
         const now = new Date();
         const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
         
-        const day = londonTime.getDay(); // 0=Sun, 1=Mon...
+        const day = londonTime.getDay(); 
         const hours = londonTime.getHours();
         const minutes = londonTime.getMinutes();
         const timeDecimal = hours + (minutes / 60);
         
-        // Mon-Fri (1-5): 7:00-14:30 AND 16:00-19:15
-        // Sat (6): 7:00-12:00
         let isOpen = false;
 
         if (day >= 1 && day <= 5) {
@@ -384,8 +487,8 @@
         `;
     }
 
-    setInterval(updateStatus, 60000); // Update every minute
-    updateStatus(); // Run immediately
+    setInterval(updateStatus, 60000); 
+    updateStatus(); 
 </script>
 </body>
 </html>
