@@ -47,40 +47,37 @@
             .grid-2 { grid-template-columns: 1fr 1fr; gap: 6rem; }
             .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
         }
-/* --- LIQUID GLASS STATUS BADGE --- */
-.glass-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 20px;
 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 9999px; /* Pill shape */
-}
-
-.status-dot { width: 8px; height: 8px; border-radius: 50%; display: block; }
-.divider { color: rgba(255, 255, 255, 0.2); margin: 0 2px; }
-
-/* Colors & Animation */
-.dot-open { background-color: #4ade80; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); animation: pulse-green 2s infinite; }
-.text-open { color: #4ade80; font-weight: 500; text-shadow: 0 0 10px rgba(74,222,128,0.3); }
-
-.dot-closed { background-color: #ef4444; }
-.text-closed { color: #ef4444; font-weight: 500; }
-
-@keyframes pulse-green {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
-}
         /* NAVIGATION */
-        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 50; mix-blend-mode: difference; }
-        .nav-brand { font-size: 1.5rem; }
+        nav { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 2.5rem 3rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 50; 
+            mix-blend-mode: difference; 
+            transition: padding 0.3s ease;
+        }
+        .nav-brand { font-size: 1.5rem; white-space: nowrap; }
         .nav-menu { display: none; gap: 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
-        @media(min-width: 768px) { .nav-menu { display: flex; } }
+        
+        @media(min-width: 768px) { 
+            .nav-menu { display: flex; } 
+        }
 
         /* HERO */
-        header { height: 90vh; display: flex; align-items: flex-end; padding-bottom: 6rem; position: relative; }
+        header { 
+            height: 90vh; 
+            display: flex; 
+            align-items: flex-end; 
+            /* Raised the text by increasing bottom padding */
+            padding-bottom: 15vh; 
+            position: relative; 
+        }
         .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; filter: grayscale(100%) contrast(1.1); z-index: -2; }
         .hero-overlay { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.1) 40%, rgba(5,5,5,0.8) 80%, rgba(5,5,5,1) 100%); }
 
@@ -92,7 +89,7 @@
 
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #111; margin-bottom: 1rem; filter: grayscale(100%); opacity: 0.8; transition: filter 0.5s ease, opacity 0.5s ease; }
         .video-wrapper:hover { filter: grayscale(0%); opacity: 1; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .video-wrapper iframe, .video-wrapper img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
 
         /* BUTTONS */
         .btn-outline {
@@ -108,7 +105,6 @@
         }
         .btn-outline:hover { background: var(--text-main); color: var(--bg); }
         
-        /* Special CTA Button Style */
         .btn-solid {
             display: inline-block;
             padding: 1rem 2.5rem;
@@ -130,6 +126,22 @@
         .review-text { font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 1rem; }
         .review-meta { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
 
+        /* HERO STATUS INDICATOR */
+        .hero-status-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 15px;
+            padding-left: 15px;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+        }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+        .dot-open { background-color: #4ade80; box-shadow: 0 0 8px #4ade80; }
+        .dot-closed { background-color: #ef4444; }
+
         /* FOOTER */
         footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 6rem 0; font-size: 0.9rem; color: var(--text-muted); }
 
@@ -147,12 +159,6 @@
         <a href="#reviews">Reviews</a>
         <a href="filming.html">Filming</a>
     </div>
-    <!-- UPDATED STATUS CONTAINER -->
-<div style="font-size: 0.7rem; text-align: right; text-transform: uppercase; letter-spacing: 0.1em;">
-    <div id="status-container" class="glass-badge">
-        Loading...
-    </div>
-</div>
 </nav>
 
 <!-- HERO -->
@@ -160,11 +166,16 @@
     <div class="hero-overlay"></div>
     <img src="https://assets-eu-01.kc-usercontent.com/6bb3df3c-b648-01ae-2357-22fa5c7d5f19/23f0f2b9-dfbf-41f0-8ffb-aebadacdc444/The%20Regency%20Cafe%20Image.jpg" alt="Interior" class="hero-img">
     <div class="container" style="width: 100%;">
-        <span class="type-sub fade-in">Est. 1946 — Westminster, London</span>
+        <div class="type-sub fade-in" style="display: flex; align-items: center;">
+            <span>Est. 1946 — Westminster, London</span>
+            <!-- NEW STATUS INDICATOR -->
+            <div id="hero-status" class="hero-status-wrapper">
+                <!-- Javascript will inject here -->
+            </div>
+        </div>
         <h1 class="type-heading fade-in" style="max-width: 600px;">
             Best English Breakfast <br>in London.
         </h1>
-
     </div>
 </header>
 
@@ -192,7 +203,7 @@
 <!-- HIGHLIGHT MENU -->
 <section id="menu" class="container">
     <div style="text-align: center; margin-bottom: 6rem;">
-        <span class="type-sub">The Menu</span>
+        <!-- Removed "The Menu" label as requested -->
         <h2 class="type-heading">No Substitutions.</h2>
         <p style="color: var(--text-muted); margin-top: 1rem;">Authentic English breakfast for excellent value.</p>
     </div>
@@ -202,9 +213,9 @@
         <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_11.jpg" alt="Full English" class="story-img">
         <div>
             <span class="type-sub" style="color: var(--text-main); margin-bottom: 0.5rem;">The Icon</span>
-            <h3 class="type-heading" style="font-size: 2rem; margin-bottom: 1rem;">Set Breakfast</h3>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">The definitive London morning. Egg, Bacon, Sausage, Beans, Toast. Includes Coffee or Tea.</p>
-            <p class="type-logo" style="font-size: 1.25rem; color: var(--accent);">£6.95</p>
+            <h3 class="type-heading" style="font-size: 2rem; margin-bottom: 1rem;">Set Breakfast Deal</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">1 Egg, 2 Bacon, Sausage. Comes with Beans OR Tomatoes, Toast OR Bread, and Tea OR Coffee.</p>
+            <p class="type-logo" style="font-size: 1.25rem; color: var(--accent);">£9.99</p>
         </div>
     </div>
 
@@ -216,8 +227,8 @@
         <div style="order: 1;">
             <span class="type-sub" style="color: var(--text-main); margin-bottom: 0.5rem;">Lunch Classic</span>
             <h3 class="type-heading" style="font-size: 2rem; margin-bottom: 1rem;">Omelette</h3>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Three egg omelette served with our legendary steak-cut chips. Golden, fluffy, and filling.</p>
-            <p class="type-logo" style="font-size: 1.25rem; color: var(--accent);">£5.50</p>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Plain Omelette served with our legendary steak-cut chips. Fillings available upon request.</p>
+            <p class="type-logo" style="font-size: 1.25rem; color: var(--accent);">£7.00</p>
         </div>
     </div>
 
@@ -233,7 +244,7 @@
             <span class="type-sub">The Verdict</span>
             <h2 class="type-heading">4.7 / 5 Stars</h2>
         </div>
-        <a href="https://www.google.com/maps/place/Regency+Cafe/@51.4937725,-78.179069,8883620m/data=!3m1!1e3!4m12!1m2!2m1!1sregency+cafe!3m8!1s0x487604dd8061aee7:0x9fb87b86a09b1332!8m2!3d51.4937725!4d-0.132194!9m1!1b1!15sCgxyZWdlbmN5IGNhZmVaDiIMcmVnZW5jeSBjYWZlkgEEY2FmZeABAA!16s%2Fm%2F0t_dnzf?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-outline" style="margin-top: 0;">Read All Reviews</a>
+        <a href="https://www.google.com/maps/place/Regency+Cafe" target="_blank" class="btn-outline" style="margin-top: 0;">Read All Reviews</a>
     </div>
 
     <div class="grid-2">
@@ -264,27 +275,29 @@
     <div class="grid-3">
         <div>
             <div class="video-wrapper">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/U0z62IALjqM?si=Yyajh0RCwiCbugVY" title="Layer Cake" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/U0z62IALjqM?si=qworYLM1UF_j_-Zs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <h4 class="dish-name" style="margin-top: 1rem;">Layer Cake (2004)</h4>
         </div>
         <div>
             <div class="video-wrapper">
-               <iframe width="560" height="315" src="https://www.youtube.com/embed/RIz4Sph-KRM?si=DB4nHc-MIiI_1hms" title="Warriors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RIz4Sph-KRM?si=mJgtmZGEsscgFy_A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <h4 class="dish-name" style="margin-top: 1rem;">Warriors (1999)</h4>
         </div>
+        <!-- CHANGED TO PRIDE -->
         <div>
             <div class="video-wrapper">
-               <iframe width="560" height="315" src="https://www.youtube.com/embed/B7UFOKQdu9E?si=uOL89E-wpOmTy2Fr" title="LondonMap" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/RjhUy6q3TMA?si=dVvf2SvSQYSLKr6a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
-            <h4 class="dish-name" style="margin-top: 1rem;">LondonMap Feature</h4>
+            <h4 class="dish-name" style="margin-top: 1rem;">Pride (2014)</h4>
         </div>
     </div>
-    <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">Also seen in The Telegraph, Rocketman, Pride, Judge John Deed, London Spy.</p>
+    <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">Also seen in The Telegraph, Rocketman, Judge John Deed, London Spy.</p>
 </section>
 
-<!-- SHOP / MERCHANDISE (NEW SECTION) -->
+
+<!-- SHOP / MERCHANDISE -->
 <section id="shop" class="container">
     <div style="background: rgba(255,255,255,0.03); padding: 5rem 2rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
         <span class="type-sub">Merchandise</span>
@@ -292,10 +305,10 @@
         <p style="color: var(--text-muted); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
             Bring a piece of history home. We are now selling the Official Regency Café London Gift Set, which specifically contains a collection of our signature souvenir mugs.
         </p>
-        <!-- External Link Button -->
+        <!-- Updated CTA Text -->
         <a href="https://regency-cafe.co.uk" target="_blank" class="btn-solid" style="margin-top: 0;">
-  Order Collection Now
-</a>
+            Join the Waitlist
+        </a>
 
     </div>
 </section>
@@ -326,16 +339,17 @@
 
 <script>
     gsap.registerPlugin(ScrollTrigger);
-    // Added #shop to animation array
+    
     const elements = gsap.utils.toArray('h2, .review-block, .story-img, .video-wrapper, #shop');
     elements.forEach(el => {
         gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 30, opacity: 0, duration: 1.2, ease: "power2.out" });
     });
     gsap.to(".fade-in", { y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power2.out", delay: 0.2 });
 
-   // --- UPDATED STATUS LOGIC ---
+   // --- HERO STATUS LOGIC ---
     function updateStatus() {
-        const container = document.getElementById('status-container');
+        const heroStatus = document.getElementById('hero-status');
+        if(!heroStatus) return;
         
         // Get London Time
         const now = new Date();
@@ -344,15 +358,10 @@
         const day = londonTime.getDay(); // 0=Sun, 1=Mon...
         const hours = londonTime.getHours();
         const minutes = londonTime.getMinutes();
-        const timeDecimal = hours + (minutes / 60); // e.g., 14:30 = 14.5
+        const timeDecimal = hours + (minutes / 60);
         
-        // Format string HH:MM
-        const timeString = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
-
-        // Logic: 
         // Mon-Fri (1-5): 7:00-14:30 AND 16:00-19:15
         // Sat (6): 7:00-12:00
-        // Sun (0): Closed
         let isOpen = false;
 
         if (day >= 1 && day <= 5) {
@@ -365,21 +374,16 @@
             }
         }
 
-        // Determine Classes
-        const colorClass = isOpen ? 'text-open' : 'text-closed';
         const dotClass = isOpen ? 'dot-open' : 'dot-closed';
-        const statusText = isOpen ? 'OPEN NOW' : 'CLOSED';
+        const color = isOpen ? '#4ade80' : '#ef4444';
+        const text = isOpen ? 'OPEN NOW' : 'CLOSED';
 
-        // Render HTML with Glass Container Structure
-        container.innerHTML = `
+        heroStatus.innerHTML = `
             <span class="status-dot ${dotClass}"></span>
-            <span class="${colorClass}">${statusText}</span> 
-            <span class="divider">|</span> 
-            <span class="${colorClass}">LONDON ${timeString}</span>
+            <span style="color: ${color}; font-weight: 500;">${text}</span>
         `;
     }
 
-    // Init
     setInterval(updateStatus, 60000); // Update every minute
     updateStatus(); // Run immediately
 </script>

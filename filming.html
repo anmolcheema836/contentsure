@@ -50,8 +50,10 @@
         /* FORM */
         .form-group { margin-bottom: 2rem; }
         label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
-        input, textarea { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding: 1rem 0; color: var(--text-main); font-family: var(--font-sans); outline: none; transition: border-color 0.3s; }
-        input:focus, textarea:focus { border-color: var(--accent); }
+        input, textarea, select { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding: 1rem 0; color: var(--text-main); font-family: var(--font-sans); outline: none; transition: border-color 0.3s; }
+        select { color: var(--text-main); cursor: pointer; }
+        select option { background: #111; color: var(--text-main); }
+        input:focus, textarea:focus, select:focus { border-color: var(--accent); }
         .btn-submit { background: transparent; border: 1px solid var(--text-main); color: var(--text-main); padding: 1rem 3rem; text-transform: uppercase; letter-spacing: 0.2em; font-family: var(--font-logo); cursor: pointer; transition: all 0.3s; margin-top: 1rem; }
         .btn-submit:hover { background: var(--text-main); color: var(--bg); }
 
@@ -76,7 +78,6 @@
 
 <header>
     <div class="hero-overlay"></div>
-    <!-- Filming related hero image -->
     <img src="https://regencycafe.has.restaurant/wp-content/uploads/sites/5/2016/01/regency_10.jpg" alt="Filming Set" class="hero-img">
     <div class="container" style="width: 100%;">
         <span class="type-sub fade-in">Industry Access</span>
@@ -92,19 +93,19 @@
     <div class="grid-3">
         <div>
             <div class="video-wrapper">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/U0z62IALjqM?si=Yyajh0RCwiCbugVY" title="Layer Cake" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/S2qV7J10oNI" title="Layer Cake" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <h4 class="dish-name" style="margin-top: 1rem;">Layer Cake (2004)</h4>
         </div>
         <div>
             <div class="video-wrapper">
-               <iframe width="560" height="315" src="https://www.youtube.com/embed/RIz4Sph-KRM?si=DB4nHc-MIiI_1hms" title="Warriors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/5D8_u7jXCM0" title="Warriors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <h4 class="dish-name" style="margin-top: 1rem;">Warriors (1999)</h4>
         </div>
         <div>
             <div class="video-wrapper">
-               <iframe width="560" height="315" src="https://www.youtube.com/embed/B7UFOKQdu9E?si=uOL89E-wpOmTy2Fr" title="LondonMap" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+               <iframe width="560" height="315" src="https://www.youtube.com/embed/9wJg6Bq4y1k" title="LondonMap" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <h4 class="dish-name" style="margin-top: 1rem;">LondonMap Feature</h4>
         </div>
@@ -125,7 +126,8 @@
             </div>
             <div class="spec-item">
                 <span class="spec-label">Access</span>
-                <span class="spec-value">24/7</span>
+                <!-- Updated from 24/7 -->
+                <span class="spec-value" style="font-size: 1.1rem; line-height: 1.4;">Flexible hours by arrangement</span>
             </div>
             <div class="spec-item">
                 <span class="spec-label">Parking</span>
@@ -137,8 +139,14 @@
             </div>
         </div>
         <div style="display: flex; flex-direction: column; justify-content: center;">
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                The interior retains authentic 1946 tiling and Art Deco styling, requiring minimal dressing for period pieces. Located conveniently in Westminster with street access for equipment loading.
+            </p>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                Filming is accommodated around our service hours where possible. Early-morning and out-of-hours access is available.
+            </p>
             <p style="color: var(--text-muted);">
-                We offer flexible hours for set dressing and shooting. The interior retains authentic 1946 tiling and Art Deco styling, requiring minimal dressing for period pieces. Located conveniently in Westminster with street access for equipment loading.
+                <strong>Private Events:</strong> Private events and bespoke uses are considered by arrangement.
             </p>
         </div>
     </div>
@@ -168,11 +176,27 @@
                     <input type="email" placeholder="name@company.com">
                 </div>
             </div>
+            <!-- Added Project Type Field -->
+            <div class="form-group">
+                <label>Project Type</label>
+                <select>
+                    <option value="" disabled selected>Select type...</option>
+                    <option value="Film">Feature Film</option>
+                    <option value="TV">TV Series</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Documentary">Documentary</option>
+                    <option value="Event">Private Event / Bespoke</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label>Shoot Details & Dates</label>
                 <textarea rows="4" placeholder="Brief description of requirements..."></textarea>
             </div>
             <button type="button" class="btn-submit">Send Enquiry</button>
+            <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); font-style: italic;">
+                We respond to all professional production enquiries.
+            </p>
         </form>
     </div>
 </section>
